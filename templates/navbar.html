@@ -44,6 +44,15 @@
 					{{ navbarItem .Path (.T "Request beatmap ranking") "/beatmaps/rank_request" }}
 				</div>
 			</div>
+			<div class="ui dropdown item">
+				<span>{{ .T "Clans" }}</span>
+				<div class="menu">
+					{{ navbarItem .Path (.T "Clan Leaderboard") "/clans?mode=0" }}
+					{{ navbarItem .Path (.T "Clan Settings") "/settings/clansettings }}
+					<div class="divider"></div>
+					{{ navbarItem .Path (.T "Create Clan") "/clans/create" }}
+				</div>
+			</div>
 			{{ end }}
 			{{ navbarItem .Path (.T "Donate" | printf "<i class=\"red heart icon\"></i>%s") "/donate" }}
 			{{ navbarItem .Path (.T "Apply") "/apply" }}
