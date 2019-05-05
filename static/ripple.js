@@ -511,7 +511,7 @@ function api(endpoint, data, success, failure, post) {
   }
 
   var errorMessage =
-      "An error occurred while contacting the Ripple API. Please report this to a Ripple developer.";
+      "An error occurred while contacting the Homura API. Please report this to Aoba.";
 
   $.ajax({
     method : (post ? "POST" : "GET"),

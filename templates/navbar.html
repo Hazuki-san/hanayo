@@ -1,11 +1,12 @@
 {{ define "navbar" }}
 {{ $isRAP   := and (hasAdmin .Context.User.Privileges) (isRAP .Path) }}
 {{ $isAdmin := hasAdmin .Context.User.Privileges }}
-{{ $ds      := band .ClientFlags 1 }}
-<div class="ui secondary fixed-height stackable white background main menu no margin bottom{{ if .DisableHH }} dropped{{ end }}" id="navbar">
+<div class="triangles-1">
+
+<div class="ui secondary fixed-height stackable black background main menu no margin bottom {{ if .DisableHH }} dropped{{ end }} kotrik-bar" id="navbar">
 	<div class="ui container">
 		<div class="item">
-			<b><a href="/" title="{{ .T "Home page" }}"><img class="ripple logo" src="/static/logos/text-{{ if $ds }}white{{ else }}black{{ end }}.png" alt="Ripple"></a></b>
+			<b><a href="/" title="{{ .T "Home page" }}"><img class="ripple logo" src="/static/logos/text-white.png" alt="osu!thailand"></a></b>
 		</div>
 		{{ if $isRAP }}
 			{{/*
@@ -22,10 +23,18 @@
 					{{ navbarItem .Path (.T "About") "/about" }}
 					{{ navbarItem .Path (.T "Rules") "/doc/rules" }}
 					{{ navbarItem .Path (.T "Documentation") "/doc" }}
-					{{ navbarItem .Path (.T "Server switcher") "/static/CHEATERS.exe" }}
 					<div class="divider"></div>
 					{{ navbarItem .Path (.T "Chat (Discord)") .Conf.DiscordServer }}
-					{{ navbarItem .Path (.T "Contact support") "https://support.ripple.moe" }}
+					{{ navbarItem .Path (.T "Contact support") "https://support.bigtu.vip" }}
+				</div>
+			</div>
+			<div class="ui dropdown item">
+				<span>{{ .T "Switchers" }}</span>
+				<div class="menu">
+					{{ navbarItem .Path (.T "Server switcher (ENG)") "/static/osu!thailand_en.exe" }}
+					{{ navbarItem .Path (.T "Server switcher (ไทย)") "/static/osu!thailand_th.exe" }}
+					<div class="divider"></div>
+					{{ navbarItem .Path (.T "Server switcher (NO VIRUS WARNING)") "/static/AinuSwitcher.exe" }}
 				</div>
 			</div>
 			{{ if .Context.User.Username }}
@@ -36,17 +45,9 @@
 				</div>
 			</div>
 			{{ end }}
-			{{ if .Context.User.Username }}
-			<div class="ui dropdown item">
-				<span>{{ .T "Clans" }}</span>
-				<div class="menu">
-					{{ navbarItem .Path (.T "Leaderboard") "/clans?mode=0" }}
-					{{ navbarItem .Path {.T "Create") "/clans/create" }}
-				</div>
-			</div>
-			{{ end }}
 			{{ navbarItem .Path (.T "Donate" | printf "<i class=\"red heart icon\"></i>%s") "/donate" }}
-			{{ if $isAdmin }}{{ navbarItem .Path (.T "RAP" | printf "<b>%s</b>") "https://old.cookiezi.pw/index.php?p=100" }}{{ end }}
+			{{ navbarItem .Path (.T "Apply") "/apply" }}
+			{{ if $isAdmin }}{{ navbarItem .Path (.T "RAP" | printf "<b>%s</b>") "https://old.bigtu.vip/index.php?p=100" }}{{ end }}
 		{{ end }}
 		<div class="firetrucking-right-menu">
 			<div class="item">
@@ -74,5 +75,6 @@
 			{{ end }}
 		</div>
 	</div>
+</div>
 </div>
 {{ end }}

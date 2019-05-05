@@ -1,0 +1,53 @@
+{{/*###
+Handler=/apply/bat
+Include=../user_group.html
+TitleBar=Apply for BAT
+KyutGrill=homepage2.jpg
+*/}}
+{{ define "tpl" }}
+{{ $staffAppEnabled := qb "SELECT value_int FROM system_settings WHERE name = 'staffApps'" }}
+{{ $isGod := has .Context.User.Privileges 3145727 }}
+{{ $isStaff := (hasAdmin .Context.User.Privileges) }}
+{{ $gqm := atoi (.Gin.Query "mode") }}
+{{ $global := . }}
+{{ with (.Get "users/full?id=%d" .Context.User.ID) }}
+{{ $favouritemode := _or $gqm .favourite_mode }}
+	{{ if $isStaff }} {{/* Checks to see if Staff, if so, redirect, if not, continue. */}}
+		<script>window.location = "/apply";</script>
+	{{ else }}
+	{{ if not $.Context.User.ID }}
+		<div class="ui container">
+			<div class="ui error message">
+				{{ $.T "You are not logged in." }}
+			</div>
+		</div>
+	{{ else if not ($staffAppEnabled.value_int.Bool) }}
+		<div class="ui container">
+			<div class="ui error message">
+				{{ $.T "Applications are currently closed." }}
+			</div>
+		</div>
+	{{ else }}
+		<div class="ui container">
+			<div class="ui segments">
+				<div class="ui segment">
+					<h1 class="ui center aligned header">
+						{{ $.T "Apply for BAT" }}
+						<div class="sub header">
+							{{ $.T "I know we need BATs" }}
+						</div>
+					</h1>
+					<h4 class="ui horizontal divider header">
+						{{ $.T "Link" }}
+					</h4>
+					<div class="centered eight wide column">
+						<a href="https://docs.google.com/forms/d/e/1FAIpQLScVSZS94ukUMYy5P2Dl1qGkIAPd6s89JcgU2I3fGD_KOaRdQw/viewform">
+							<button class="home-btn btn-key-red">{{ $.T "I pea'd." }}</button></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{ end }}
+	{{ end }}
+{{ end }}
+{{ end }}
