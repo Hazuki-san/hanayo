@@ -28,21 +28,21 @@ func leaveClan(c *gin.Context) {
 		// ดูว่าคนนี้มีแคลนหรือยัง
 		if db.QueryRow("SELECT 1 FROM user_clans WHERE user = ? AND clan = ?", getContext(c).User.ID, i).
 			Scan(new(int)) == sql.ErrNoRows {
-			addMessage(c, errorMessage{T(c, "นี้มันปัญหาอะไรวะเนี่ย...")})
+			addMessage(c, errorMessage{T(c, "What happened...? We just got... unexpected error?")})
 			return
 		}
 		// กูไม่รู้หรอกว่ามันจะได้ผลมั้ย แต่ควยชั่งแม่งเย็ดแม่
 		
 			
 		db.Exec("DELETE FROM user_clans WHERE user = ? AND clan = ?", getContext(c).User.ID, i)
-		addMessage(c, successMessage{T(c, "ออกจากแคลนแล้ว")})
+		addMessage(c, successMessage{T(c, "You've left the clan.")})
 		getSession(c).Save()
 		c.Redirect(302, "/c/"+i)
 	} else {
 		// เดี๋ยวไอ้เหี้ย มันออกไปยังวะ!!!
 		if db.QueryRow("SELECT 1 FROM user_clans WHERE user = ? AND clan = ?", getContext(c).User.ID, i).
 			Scan(new(int)) == sql.ErrNoRows {
-			addMessage(c, errorMessage{T(c, "นี้มันปัญหาอะไรวะเนี่ย...")})
+			addMessage(c, errorMessage{T(c, "What happened...? We just got... unexpected error?")})
 			return
 		}
 		// ลบคำเชิญออก
@@ -52,7 +52,7 @@ func leaveClan(c *gin.Context) {
 		// ควยไม่สร้างแม่งละสัส :c
 		db.Exec("DELETE FROM clans WHERE id = ?", i)
 		
-		addMessage(c, successMessage{T(c, "ยุบแคลนแล้ว")})
+		addMessage(c, successMessage{T(c, "You clan has been disbanded")})
 		getSession(c).Save()
 		c.Redirect(302, "/clans?mode=0")
 	}
@@ -96,7 +96,7 @@ func clanPage(c *gin.Context) {
 	defer resp(c, 200, "clansample.html", data)
 
 	if data.ClanID == 0 {
-		data.TitleBar = "ไม่เจอแคลนนี้นะ"
+		data.TitleBar = "404 Clan Not Found!"
 		data.Messages = append(data.Messages, warningMessage{T(c, "That clan could not be found.")})
 		return
 	}
@@ -110,7 +110,7 @@ func clanPage(c *gin.Context) {
 		}
 	}
 
-	data.TitleBar = T(c, "หน้าเว๊ปของแคลน %s", clanName)
+	data.TitleBar = T(c, "%s's Clan Page", clanName)
 	data.DisableHH = true
 	// data.Scripts = append(data.Scripts, "/static/profile.js")
 }
@@ -183,13 +183,13 @@ ctx := getContext(c)
 		if db.QueryRow("SELECT 1 FROM clans WHERE tag = ? AND id != ?", c.PostForm("tag"), clan).
 		Scan(new(int)) != sql.ErrNoRows {
 			resp403(c)
-			addMessage(c, errorMessage{T(c, "เหมือนจะมีคนใช้ตัวย่อนั้นไปแล้วนะ...")})
+			addMessage(c, errorMessage{T(c, "Someone already used that TAG! Please try another!")})
 			return
 		}
 		
 		db.Exec("UPDATE clans SET description = ?, icon = ?, tag = ?, background = ? WHERE id = ?", c.PostForm("description"), c.PostForm("icon"), tag, c.PostForm("bg"), clan)
 	}
-	addMessage(c, successMessage{T(c, "เสร็จสิ้น!")})
+	addMessage(c, successMessage{T(c, "Success!")})
 	getSession(c).Save()
 	c.Redirect(302, "/settings/clansettings")
 }
@@ -218,7 +218,7 @@ func clanInvite(c *gin.Context) {
 			if db.QueryRow("SELECT 1 FROM clans WHERE id = ?", res).
 			Scan(new(int)) == sql.ErrNoRows {
 
-				addMessage(c, errorMessage{T(c, "ไม่เห็นจะมีแคลนนี้เลย!")})
+				addMessage(c, errorMessage{T(c, "Seems like we don't found that clan.")})
 				getSession(c).Save()
 				c.Redirect(302, "/c/"+s)
 				return
@@ -227,7 +227,7 @@ func clanInvite(c *gin.Context) {
 			if db.QueryRow("SELECT 1 FROM user_clans WHERE user = ?", getContext(c).User.ID).
 			Scan(new(int)) != sql.ErrNoRows {
 				
-				addMessage(c, errorMessage{T(c, "เหมือนว่าคุณน่าจะอยู่ในแคลนอยู่แล้วนะ")})
+				addMessage(c, errorMessage{T(c, "Seems like you're already in the clan.")})
 				getSession(c).Save()
 				c.Redirect(302, "/c/"+s)
 				return
@@ -240,19 +240,19 @@ func clanInvite(c *gin.Context) {
 		db.QueryRow("SELECT COUNT(*) FROM user_clans WHERE clan = ? ", res).Scan(&count)
 		db.QueryRow("SELECT mlimit FROM clans WHERE id = ? ", res).Scan(&limit)
 		if count >= limit {
-			addMessage(c, errorMessage{T(c, "โทษทีนะ แคลนนี้เต็มแล้วอะ ;w;")})
+			addMessage(c, errorMessage{T(c, "Ow, I'm sorry this clan is already full ;w;")})
 			getSession(c).Save()
 			c.Redirect(302, "/c/"+s)
 			return
 		}
 		// เข้าแคลน
 		db.Exec("INSERT INTO `user_clans`(user, clan, perms) VALUES (?, ?, 1);", getContext(c).User.ID, res)
-		addMessage(c, successMessage{T(c, "เข้าแคลนแล้วจ้า!")})
+		addMessage(c, successMessage{T(c, "You've joined the clan! Hooray!! \(^o^)/")})
 		getSession(c).Save()
 		c.Redirect(302, "/c/"+s)
 	} else {
 		resp403(c)
-		addMessage(c, errorMessage{T(c, "ไม่!!!")})
+		addMessage(c, errorMessage{T(c, "NO!!!")})
 	}
 }
 
@@ -284,7 +284,7 @@ func clanKick(c *gin.Context) {
 			}
 
 	db.Exec("DELETE FROM user_clans WHERE user = ?", member)
-	addMessage(c, successMessage{T(c, "เสร็จสิ้น!")})
+	addMessage(c, successMessage{T(c, "Success!")})
 	getSession(c).Save()
 	c.Redirect(302, "/settings/clansettings")
 }
