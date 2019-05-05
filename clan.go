@@ -247,7 +247,7 @@ func clanInvite(c *gin.Context) {
 		}
 		// เข้าแคลน
 		db.Exec("INSERT INTO `user_clans`(user, clan, perms) VALUES (?, ?, 1);", getContext(c).User.ID, res)
-		addMessage(c, successMessage{T(c, "You've joined the clan! Hooray!! \(^o^)/")})
+		addMessage(c, successMessage{T(c, "You've joined the clan! Hooray!! \\(^o^)/")})
 		getSession(c).Save()
 		c.Redirect(302, "/c/"+s)
 	} else {
