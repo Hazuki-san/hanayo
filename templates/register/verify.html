@@ -9,14 +9,14 @@
 	<div class="ui segment">
 		<h1 class="ui heading">{{ .T "The Guide (<a href='/doc/connection_guide' target='_blank'>Windows</a>, <a href='/doc/linux' target='_blank'>Linux</a>). TL;DR version below." | html }}</h1>
 		<ol class="ui list">
-			<li><a href="https://mu.nyodev.xyz/upd.php?id=18"><b>{{ .T "Download the server switcher" }}</b></a></li>
-			<li>{{ .T "Extract it, disable your antivirus, execute <i>RippleServerSwitcher.exe</i> <b>as administrator</b>" | html }}</li>
-			<li>{{ .T "Click on <b>Connect to Ripple</b>, then <b>Ok/Yes</b>" | html }}</li>
-			<li>{{ .T "Make sure the switcher says you're connected to <b>Ripple</b>" | html }}</li>
+			<li><a href="https://bigtu.vip/static/AinuSwitcher.exe"><b>{{ .T "Download the server switcher" }}</b></a></li>
+			<li>{{ .T "Disable your antivirus, execute <i>AinuSwitcher.exe</i> <b>as administrator</b>" | html }}</li>
+			<li>{{ .T "Click on <b>Connect to Ainu</b>, then <b>Ok/Yes</b>" | html }}</li>
+			<li>{{ .T "Make sure the switcher says you're connected to <b>Ainu!</b>" | html }}</li>
 			<li>{{ .T "If it says something about read-only mode, go to <code>C:\\Windows\\System32\\Drivers\\etc</code>, open the hosts' file Properties and make sure it's not set to \"Read only\"." | html }}</li>
 		</ol>
 		<p>
-			{{ .T "If you're still having trouble, then again, get on our <a href='%s'>Discord server's</a> #help channel. To have a better chance to be answered, say \"strawberry\" anywhere in your messages so that we know you have actually read this." (config "DiscordServer") | html }}
+			{{ .T "If you're still having trouble, then again, get on our <a href='%s'>Discord server's</a> #help channel. To have a better chance to be answered, say \"help switcher\" anywhere in your messages so that we know you have actually read this." (config "DiscordServer") | html }}
 		</p>
 	</div>
 	<div class="ui center aligned segment">
